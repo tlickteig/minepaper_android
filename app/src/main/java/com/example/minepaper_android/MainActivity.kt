@@ -9,18 +9,26 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -31,6 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -49,58 +58,80 @@ class MainActivity : ComponentActivity() {
         var fullImageList: List<String> = mutableListOf()
     }
 
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MinePaperTheme {
-                val page = remember { mutableStateOf(1) }
-                val loading = remember { mutableStateOf(false) }
-                val itemList = remember { mutableStateListOf<String>() }
-                val listState = rememberLazyListState()
-
-                LazyColumn(
-                    state = listState,
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    items(itemList) { item ->
-                        //Text(text = item, modifier = Modifier.padding(10.dp))
-                        AsyncImage(
-                            model = "${Constants.CDN_URL}/${item}",
-                            contentDescription = null
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            colors = TopAppBarDefaults.mediumTopAppBarColors(
+                                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                titleContentColor = MaterialTheme.colorScheme.primary,
+                            ),
+                            title = {
+                                Text("MinePaper")
+                            }
                         )
                     }
+                ) { innerPadding ->
+                    val page = remember { mutableStateOf(0) }
+                    val loading = remember { mutableStateOf(false) }
+                    val itemList = remember { mutableStateListOf<String>() }
+                    val listState = rememberLazyListState()
 
-                    item {
-                        if (loading.value) {
-                            Box(
+                    LazyColumn(
+                        state = listState,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(10.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        items(itemList) { item ->
+                            Spacer(
+                                modifier = Modifier.width(20.dp)
+                            )
+
+                            AsyncImage(
+                                model = "${Constants.CDN_URL}/${item}",
+                                contentDescription = null,
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(10.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CircularProgressIndicator(
-                                    modifier = Modifier.size(50.dp),
-                                    strokeWidth = 2.dp
-                                )
+                                    .clip(RoundedCornerShape(10))
+                            )
+                        }
+
+                        item {
+                            if (loading.value) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(10.dp),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    CircularProgressIndicator(
+                                        modifier = Modifier.size(50.dp),
+                                        strokeWidth = 2.dp
+                                    )
+                                }
                             }
                         }
                     }
-                }
 
-                LaunchedEffect(key1 = page.value) {
-                    loading.value = true
-                    itemList.addAll(getListOfImagesOnPage(page.value))
-                    loading.value = false
-                }
-
-                LaunchedEffect(listState) {
-                    snapshotFlow {
-                        listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+                    LaunchedEffect(key1 = page.value) {
+                        loading.value = true
+                        itemList.addAll(getListOfImagesOnPage(page.value))
+                        loading.value = false
                     }
-                    .collectLatest { index ->
-                        if (!loading.value && index != null && index >= itemList.size - 5) {
-                            page.value++
+
+                    LaunchedEffect(listState) {
+                        snapshotFlow {
+                            listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+                        }
+                        .collectLatest { index ->
+                            if (!loading.value && index != null && index >= itemList.size - 5) {
+                                page.value++
+                            }
                         }
                     }
                 }
