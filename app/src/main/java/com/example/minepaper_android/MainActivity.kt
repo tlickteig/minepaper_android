@@ -6,9 +6,11 @@ import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -47,8 +49,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.example.minepaper_android.classses.Constants
+import com.example.minepaper_android.classses.CustomColors
 import com.example.minepaper_android.classses.Utilities
-import com.example.minepaper_android.ui.theme.MinePaperTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
@@ -62,16 +64,18 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MinePaperTheme {
+            MaterialTheme {
                 Scaffold(
                     topBar = {
                         TopAppBar(
                             colors = TopAppBarDefaults.mediumTopAppBarColors(
-                                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                titleContentColor = MaterialTheme.colorScheme.primary,
+                                containerColor = CustomColors.BackgroundColor
                             ),
                             title = {
-                                Text("MinePaper")
+                                Text(
+                                    text = "MinePaper",
+                                    color = CustomColors.TextColor
+                                )
                             }
                         )
                     }
@@ -81,57 +85,62 @@ class MainActivity : ComponentActivity() {
                     val itemList = remember { mutableStateListOf<String>() }
                     val listState = rememberLazyListState()
 
-                    LazyColumn(
-                        state = listState,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(10.dp),
-                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    Column(
+                        modifier = Modifier.padding(innerPadding)
+                            .background(color = Color(0xFF020202))
                     ) {
-                        items(itemList) { item ->
-                            Spacer(
-                                modifier = Modifier.width(20.dp)
-                            )
+                        LazyColumn(
+                            state = listState,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(10.dp),
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            items(itemList) { item ->
+                                Spacer(
+                                    modifier = Modifier.width(20.dp)
+                                )
 
-                            AsyncImage(
-                                model = "${Constants.CDN_URL}/${item}",
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(10))
-                            )
-                        }
-
-                        item {
-                            if (loading.value) {
-                                Box(
+                                AsyncImage(
+                                    model = "${Constants.CDN_URL}/${item}",
+                                    contentDescription = null,
                                     modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(10.dp),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    CircularProgressIndicator(
-                                        modifier = Modifier.size(50.dp),
-                                        strokeWidth = 2.dp
-                                    )
+                                        .clip(RoundedCornerShape(10))
+                                )
+                            }
+
+                            item {
+                                if (loading.value) {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(10.dp),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        CircularProgressIndicator(
+                                            modifier = Modifier.size(50.dp),
+                                            strokeWidth = 2.dp
+                                        )
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    LaunchedEffect(key1 = page.value) {
-                        loading.value = true
-                        itemList.addAll(getListOfImagesOnPage(page.value))
-                        loading.value = false
-                    }
-
-                    LaunchedEffect(listState) {
-                        snapshotFlow {
-                            listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+                        LaunchedEffect(key1 = page.value) {
+                            loading.value = true
+                            itemList.addAll(getListOfImagesOnPage(page.value))
+                            loading.value = false
                         }
-                        .collectLatest { index ->
-                            if (!loading.value && index != null && index >= itemList.size - 5) {
-                                page.value++
+
+                        LaunchedEffect(listState) {
+                            snapshotFlow {
+                                listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
                             }
+                                .collectLatest { index ->
+                                    if (!loading.value && index != null && index >= itemList.size - 5) {
+                                        page.value++
+                                    }
+                                }
                         }
                     }
                 }

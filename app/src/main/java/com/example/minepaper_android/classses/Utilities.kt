@@ -46,5 +46,9 @@ class Utilities {
 
             return output
         }
+
+        fun isAppInDarkMode(): Boolean {
+            return true
+        }
     }
 }
