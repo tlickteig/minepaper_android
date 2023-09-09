@@ -69,7 +69,7 @@ class MainActivity : ComponentActivity() {
                     topBar = {
                         TopAppBar(
                             colors = TopAppBarDefaults.mediumTopAppBarColors(
-                                containerColor = CustomColors.BackgroundColor
+                                containerColor = CustomColors.TitleBarColor
                             ),
                             title = {
                                 Text(
@@ -87,7 +87,7 @@ class MainActivity : ComponentActivity() {
 
                     Column(
                         modifier = Modifier.padding(innerPadding)
-                            .background(color = Color(0xFF020202))
+                            .background(color = CustomColors.BackgroundColor)
                     ) {
                         LazyColumn(
                             state = listState,

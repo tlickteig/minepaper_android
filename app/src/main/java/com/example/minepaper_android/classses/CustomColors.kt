@@ -7,9 +7,9 @@ class CustomColors {
     companion object {
         var BackgroundColor: Color = Color.Black
             get() {
-                var output = Color(0xFF535353)
+                var output = Color(0xFF2D2D2D)
                 if (Utilities.isAppInDarkMode()) {
-                    return Color(0xFF535353)
+                    return Color(0xFF2D2D2D)
                 }
 
                 return output
@@ -20,6 +20,16 @@ class CustomColors {
                 var output = Color(0xFFEAEAEA)
                 if (Utilities.isAppInDarkMode()) {
                     return Color(0xFFEAEAEA)
+                }
+
+                return output
+            }
+
+        var TitleBarColor = Color.Black
+            get() {
+                var output = Color(0xFF535353)
+                if (Utilities.isAppInDarkMode()) {
+                    return Color(0xFF535353)
                 }
 
                 return output
