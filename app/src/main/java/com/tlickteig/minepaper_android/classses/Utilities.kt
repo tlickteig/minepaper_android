@@ -1,5 +1,7 @@
-package com.example.minepaper_android.classses
+package com.tlickteig.minepaper_android.classses
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
@@ -9,6 +11,7 @@ import org.json.JSONArray
 import java.io.IOException
 import java.util.concurrent.Semaphore
 import org.json.JSONObject
+import com.tlickteig.minepaper_android.BuildConfig
 
 class Utilities {
     companion object {
@@ -44,6 +47,10 @@ class Utilities {
             semaphore.acquire()
 
             return output
+        }
+
+        fun getVersionString(): String {
+            return BuildConfig.VERSION_NAME;
         }
     }
 }

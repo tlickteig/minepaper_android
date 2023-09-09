@@ -1,4 +1,4 @@
-package com.example.minepaper_android.classses
+package com.tlickteig.minepaper_android.classses
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
@@ -23,6 +23,10 @@ class CustomColors {
             } else {
                 Color(0xFF4A4A4A)
             }
+
+        val FadedTextColor: Color
+            @Composable
+            get() = Color.LightGray
 
         val TitleBarColor: Color
             @Composable

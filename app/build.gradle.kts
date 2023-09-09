@@ -4,15 +4,15 @@ plugins {
 }
 
 android {
-    namespace = "com.example.minepaper_android"
+    namespace = "com.tlickteig.minepaper_android"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.example.minepaper_android"
+        applicationId = "com.tlickteig.minepaper_android"
         minSdk = 24
         targetSdk = 33
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -35,6 +35,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"

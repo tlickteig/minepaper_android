@@ -1,4 +1,4 @@
-package com.example.minepaper_android
+package com.tlickteig.minepaper_android
 
 import android.media.Image
 import android.os.Bundle
@@ -48,9 +48,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
-import com.example.minepaper_android.classses.Constants
-import com.example.minepaper_android.classses.CustomColors
-import com.example.minepaper_android.classses.Utilities
+import com.tlickteig.minepaper_android.classses.Constants
+import com.tlickteig.minepaper_android.classses.CustomColors
+import com.tlickteig.minepaper_android.classses.CustomFonts
+import com.tlickteig.minepaper_android.classses.Utilities
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
@@ -72,10 +73,27 @@ class MainActivity : ComponentActivity() {
                                 containerColor = CustomColors.TitleBarColor
                             ),
                             title = {
-                                Text(
-                                    text = "MinePaper",
-                                    color = CustomColors.TextColor
-                                )
+                                Row (
+                                    horizontalArrangement = Arrangement.Start
+                                ) {
+                                    Text(
+                                        text = "MinePaper",
+                                        color = CustomColors.TextColor,
+                                        fontFamily = CustomFonts.MinecraftFont
+                                    )
+
+                                    Text(
+                                        text = " v",
+                                        color = CustomColors.FadedTextColor,
+                                        fontFamily = CustomFonts.MinecraftFont
+                                    )
+
+                                    Text(
+                                        text = Utilities.getVersionString(),
+                                        color = CustomColors.FadedTextColor,
+                                        fontFamily = CustomFonts.MinecraftFont
+                                    )
+                                }
                             }
                         )
                     }
@@ -137,7 +155,7 @@ class MainActivity : ComponentActivity() {
                                 listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
                             }
                                 .collectLatest { index ->
-                                    if (!loading.value && index != null && index >= itemList.size - 5) {
+                                    if (!loading.value && index != null && index >= itemList.size - 1) {
                                         page.value++
                                     }
                                 }

@@ -1,4 +1,4 @@
-package com.example.minepaper_android
+package com.tlickteig.minepaper_android
 
 import org.junit.Test
 

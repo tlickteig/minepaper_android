@@ -1,4 +1,4 @@
-package com.example.minepaper_android.classses
+package com.tlickteig.minepaper_android.classses
 
 class Constants {
     companion object {
