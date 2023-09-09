@@ -1,19 +1,14 @@
 package com.example.minepaper_android.classses
 
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
-import okhttp3.internal.wait
 import org.json.JSONArray
 import java.io.IOException
 import java.util.concurrent.Semaphore
 import org.json.JSONObject
-import java.security.AccessController.getContext
 
 class Utilities {
     companion object {
@@ -49,11 +44,6 @@ class Utilities {
             semaphore.acquire()
 
             return output
-        }
-
-        @Composable
-        fun isAppInDarkMode(): Boolean {
-            val light = MaterialTheme.colorScheme.
         }
     }
 }

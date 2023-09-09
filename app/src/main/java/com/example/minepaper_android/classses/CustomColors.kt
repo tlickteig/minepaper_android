@@ -1,38 +1,35 @@
 package com.example.minepaper_android.classses
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.graphics.Color
 
 class CustomColors {
+
     companion object {
-        var BackgroundColor: Color = Color.Black
-            get() {
-                var output = Color(0xFF2D2D2D)
-                if (Utilities.isAppInDarkMode()) {
-                    return Color(0xFF2D2D2D)
-                }
-
-                return output
+        val BackgroundColor: Color
+            @Composable
+            get() = if (isSystemInDarkTheme()) {
+                Color(0xFF2D2D2D)
+            } else {
+                Color(0xFFE6E6E6)
             }
 
-        var TextColor: Color = Color.Black
-            get() {
-                var output = Color(0xFFEAEAEA)
-                if (Utilities.isAppInDarkMode()) {
-                    return Color(0xFFEAEAEA)
-                }
-
-                return output
+        val TextColor: Color
+            @Composable
+            get() = if (isSystemInDarkTheme()) {
+                Color(0xFFEAEAEA)
+            } else {
+                Color(0xFF4A4A4A)
             }
 
-        var TitleBarColor = Color.Black
-            get() {
-                var output = Color(0xFF535353)
-                if (Utilities.isAppInDarkMode()) {
-                    return Color(0xFF535353)
-                }
-
-                return output
+        val TitleBarColor: Color
+            @Composable
+            get() = if (isSystemInDarkTheme()) {
+                Color(0xFF535353)
+            } else {
+                Color(0xFFF5F5F5)
             }
     }
 }
