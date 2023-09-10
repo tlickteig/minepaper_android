@@ -1,6 +1,8 @@
 package com.tlickteig.minepaper_android
 
+import android.app.WallpaperManager
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -37,6 +39,7 @@ import com.tlickteig.minepaper_android.classses.Constants
 import com.tlickteig.minepaper_android.classses.CustomColors
 import com.tlickteig.minepaper_android.classses.CustomFonts
 import com.tlickteig.minepaper_android.classses.FontAwesomeConstants
+import java.net.URL
 
 class WallpaperView : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -45,11 +48,13 @@ class WallpaperView : ComponentActivity() {
 
         val extras = this.intent.extras
         var imageName = extras!!.getString("imageName")
+
         if (imageName == null) {
             imageName = ""
         }
 
         setContent {
+            val context = LocalContext.current
             MaterialTheme {
                 Scaffold(
                     topBar = {
@@ -101,7 +106,21 @@ class WallpaperView : ComponentActivity() {
 
                             FilledTonalButton(
                                 onClick = {
-
+                                    try {
+                                        var thread = Thread {
+                                            val url = URL("${Constants.CDN_URL}/${imageName}")
+                                            val image = BitmapFactory.decodeStream(
+                                                url.openConnection().getInputStream()
+                                            )
+                                            val wallpaperManager =
+                                                WallpaperManager.getInstance(context)
+                                            wallpaperManager.setBitmap(image)
+                                        }
+                                        thread.start()
+                                    }
+                                    catch (e: Exception) {
+                                        println(e)
+                                    }
                                 }
                             ) {
                                 Text(
