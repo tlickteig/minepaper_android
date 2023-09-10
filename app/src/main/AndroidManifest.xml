@@ -15,6 +15,11 @@
         android:theme="@style/Theme.MinePaper"
         tools:targetApi="31">
         <activity
+            android:name=".WallpaperView"
+            android:exported="false"
+            android:label="@string/title_activity_wallpaper_view"
+            android:theme="@style/Theme.MinePaper" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"

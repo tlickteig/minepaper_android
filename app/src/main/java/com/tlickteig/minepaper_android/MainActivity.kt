@@ -1,5 +1,6 @@
 package com.tlickteig.minepaper_android
 
+import android.content.Intent
 import android.media.Image
 import android.os.Bundle
 import android.widget.Button
@@ -44,11 +45,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
+import com.google.android.gms.dtdi.analytics.Results
 import com.tlickteig.minepaper_android.classses.Constants
 import com.tlickteig.minepaper_android.classses.CustomColors
 import com.tlickteig.minepaper_android.classses.CustomFonts
@@ -66,6 +69,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val context = LocalContext.current
+
             MaterialTheme {
                 Scaffold(
                     topBar = {
@@ -126,7 +131,9 @@ class MainActivity : ComponentActivity() {
                                     modifier = Modifier
                                         .clip(RoundedCornerShape(10))
                                         .clickable(onClick = {
-                                            println(item)
+                                            var intent = Intent(context, WallpaperView::class.java)
+                                            intent.putExtra("imageName", item)
+                                            context.startActivity(intent)
                                         })
                                 )
                             }

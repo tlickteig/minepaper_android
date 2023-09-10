@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MinePaper</string>
+    <string name="title_activity_wallpaper_view">WallpaperView</string>
 </resources>
