@@ -6,3 +6,12 @@ class Constants {
         const val IMAGES_LIST_LOCATION = "https://cdn.minepaper.net/allFiles.json"
     }
 }
+
+class FontAwesomeConstants {
+    companion object {
+        const val SET_WALLPAPER_ICON: String = "\uF302"
+        const val SHARE_ICON: String = "\uF064"
+        const val DOWNLOAD_ICON: String = "\uF019"
+        const val BROWSER_ICON: String = "\uF0AC"
+    }
+}

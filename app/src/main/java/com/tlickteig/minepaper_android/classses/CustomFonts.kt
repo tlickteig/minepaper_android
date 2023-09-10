@@ -15,5 +15,12 @@ class CustomFonts {
                         Font(R.font.minecraft_bold_italic, FontWeight.Bold, FontStyle.Italic),
                         Font(R.font.minecraft_italic, FontWeight.Normal, FontStyle.Italic)
                 )
+
+                val FontAwesome = FontFamily(
+                        Font(R.font.fa_regular_400, FontWeight.Normal),
+                        Font(R.font.fa_solid_900, FontWeight.Bold),
+                        Font(R.font.fa_light_300, FontWeight.Light),
+                        Font(R.font.fa_thin_100, FontWeight.ExtraLight)
+                )
         }
 }
