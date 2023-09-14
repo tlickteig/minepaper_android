@@ -181,7 +181,7 @@ class WallpaperView : ComponentActivity() {
 
                             FilledTonalButton(
                                 onClick = {
-
+                                    Utilities.openImageInBrowser(imageName, context)
                                 }
                             ) {
                                 Text(

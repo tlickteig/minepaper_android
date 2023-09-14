@@ -2,7 +2,10 @@ package com.tlickteig.minepaper_android.classses
 
 import android.app.WallpaperManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.BitmapFactory
+import android.net.Uri
+import android.provider.MediaStore
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import okhttp3.Call
@@ -88,6 +91,25 @@ class Utilities {
             catch (e: Exception) {
                 println(e)
             }
+        }
+
+        fun saveImageToGallery(imageName: String, context: Context) {
+            try {
+                val url = URL("${Constants.CDN_URL}/${imageName}")
+                val image = BitmapFactory.decodeStream(
+                    url.openConnection().getInputStream()
+                )
+
+                //MediaStore.Images.Media.insertImage(context, image, imageName, "sfasdf")
+            }
+            catch (e: Exception) {
+                println(e)
+            }
+        }
+
+        fun openImageInBrowser(imageName: String, context: Context) {
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("${Constants.CDN_URL}/${imageName}"))
+            context.startActivity(browserIntent)
         }
     }
 }
