@@ -13,5 +13,8 @@ class FontAwesomeConstants {
         const val SHARE_ICON: String = "\uF064"
         const val DOWNLOAD_ICON: String = "\uF019"
         const val BROWSER_ICON: String = "\uF0AC"
+        const val HOUSE_ICON: String = "\uF015"
+        const val LOCK_ICON: String = "\uF023"
+        const val CANCEL_ICON: String = "\uF05E"
     }
 }

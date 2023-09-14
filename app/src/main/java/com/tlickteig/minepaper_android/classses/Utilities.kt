@@ -1,5 +1,8 @@
 package com.tlickteig.minepaper_android.classses
 
+import android.app.WallpaperManager
+import android.content.Context
+import android.graphics.BitmapFactory
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import okhttp3.Call
@@ -12,9 +15,14 @@ import java.io.IOException
 import java.util.concurrent.Semaphore
 import org.json.JSONObject
 import com.tlickteig.minepaper_android.BuildConfig
+import java.net.URL
 
 class Utilities {
     companion object {
+        enum class WallpaperFlags {
+            LOCK, HOME, BOTH
+        }
+
         fun returnImageListFromServer(): List<String> {
 
             var output = mutableListOf<String>()
@@ -51,6 +59,35 @@ class Utilities {
 
         fun getVersionString(): String {
             return BuildConfig.VERSION_NAME;
+        }
+
+        fun setWallpaper(imageName: String, context: Context, flags: WallpaperFlags = WallpaperFlags.BOTH) {
+            try {
+                var thread = Thread {
+                    val url = URL("${Constants.CDN_URL}/${imageName}")
+                    val image = BitmapFactory.decodeStream(
+                        url.openConnection().getInputStream()
+                    )
+                    val wallpaperManager =
+                        WallpaperManager.getInstance(context)
+
+                    when (flags) {
+                        WallpaperFlags.LOCK -> {
+                            wallpaperManager.setBitmap(image, null, false, WallpaperManager.FLAG_LOCK)
+                        }
+                        WallpaperFlags.HOME -> {
+                            wallpaperManager.setBitmap(image, null, false, WallpaperManager.FLAG_SYSTEM)
+                        }
+                        else -> {
+                            wallpaperManager.setBitmap(image)
+                        }
+                    }
+                }
+                thread.start()
+            }
+            catch (e: Exception) {
+                println(e)
+            }
         }
     }
 }
