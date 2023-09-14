@@ -141,7 +141,7 @@ class WallpaperView : ComponentActivity() {
 
                             FilledTonalButton(
                                 onClick = {
-
+                                    Utilities.saveImageToGallery(imageName, context)
                                 }
                             ) {
                                 Text(
@@ -161,7 +161,7 @@ class WallpaperView : ComponentActivity() {
 
                             FilledTonalButton(
                                 onClick = {
-
+                                    Utilities.shareImage(imageName, context)
                                 }
                             ) {
                                 Text(
