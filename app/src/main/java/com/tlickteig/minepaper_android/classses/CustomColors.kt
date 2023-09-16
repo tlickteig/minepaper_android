@@ -11,9 +11,9 @@ class CustomColors {
         val BackgroundColor: Color
             @Composable
             get() = if (isSystemInDarkTheme()) {
-                Color(0xFF2D2D2D)
+                Color(0xFF4A4A4A)
             } else {
-                Color(0xFF3BE8F5)
+                Color(0xFFEDEDED)
             }
 
         val TextColor: Color
@@ -42,18 +42,34 @@ class CustomColors {
 
         val DialogBackgroundColor: Color
             @Composable
-            get() = Color.White
+            get() = if (isSystemInDarkTheme()) {
+                Color(0xFF535353)
+            } else {
+                Color.White
+            }
 
         val TextButtonTextColor: Color
             @Composable
-            get() = Color.LightGray
+            get() = if (isSystemInDarkTheme()) {
+                Color(0xFFA3B4FF)
+            } else {
+                Color(0xFF626FFC)
+            }
 
         val FilledButtonTextColor: Color
             @Composable
-            get() = Color.LightGray
+            get() = if (isSystemInDarkTheme()) {
+                Color(0xFFEAEAEA)
+            } else {
+                Color(0xFF2F41FA)
+            }
 
         val FilledButtonBackgroundColor: Color
             @Composable
-            get() = Color.Blue
+            get() = if (isSystemInDarkTheme()) {
+                Color(0xFF4F8B8C)
+            } else {
+                Color(0xFFB3E7E8)
+            }
     }
 }
