@@ -40,6 +40,10 @@ class CustomColors {
             @Composable
             get() = Color.Red
 
+        val DialogBackgroundColor: Color
+            @Composable
+            get() = Color.Red
+
         val TextButtonTextColor: Color
             @Composable
             get() = Color.LightGray
