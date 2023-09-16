@@ -9,6 +9,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,7 +20,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
@@ -125,111 +128,119 @@ class WallpaperView : ComponentActivity() {
                                 modifier = Modifier.clip(RoundedCornerShape(10))
                             )
 
-                            Text(
-                                text = ""
-                            )
-
-                            FilledTonalButton(
-                                onClick = {
-                                    isDialogOpen.value = true
-                                },
-                                colors = ButtonDefaults.buttonColors(containerColor = CustomColors.FilledButtonBackgroundColor)
+                            Column(
+                                modifier = Modifier.fillMaxHeight()
+                                    .verticalScroll(rememberScrollState())
+                                    .weight(weight =1f, fill = false),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                Row(
-                                    modifier = Modifier.padding(15.dp)
-                                ) {
-                                    Text(
-                                        text = FontAwesomeConstants.SET_WALLPAPER_ICON,
-                                        fontFamily = CustomFonts.FontAwesome,
-                                        color = CustomColors.FilledButtonTextColor
-                                    )
+                                Text(
+                                    text = ""
+                                )
 
-                                    Text(
-                                        text = " Set Wallpaper",
-                                        fontFamily = CustomFonts.MinecraftFont,
-                                        color = CustomColors.FilledButtonTextColor
-                                    )
+                                FilledTonalButton(
+                                    onClick = {
+                                        isDialogOpen.value = true
+                                    },
+                                    colors = ButtonDefaults.buttonColors(containerColor = CustomColors.FilledButtonBackgroundColor)
+                                ) {
+                                    Row(
+                                        modifier = Modifier.padding(15.dp)
+                                    ) {
+                                        Text(
+                                            text = FontAwesomeConstants.SET_WALLPAPER_ICON,
+                                            fontFamily = CustomFonts.FontAwesome,
+                                            color = CustomColors.FilledButtonTextColor
+                                        )
+
+                                        Text(
+                                            text = " Set Wallpaper",
+                                            fontFamily = CustomFonts.MinecraftFont,
+                                            color = CustomColors.FilledButtonTextColor
+                                        )
+                                    }
                                 }
-                            }
 
-                            Text(
-                                text = ""
-                            )
+                                Text(
+                                    text = ""
+                                )
 
-                            FilledTonalButton(
-                                onClick = {
-                                    Utilities.saveImageToGallery(imageName, context)
-                                },
-                                colors = ButtonDefaults.buttonColors(containerColor = CustomColors.FilledButtonBackgroundColor)
-                            ) {
-                                Row(
-                                    modifier = Modifier.padding(15.dp)
+                                FilledTonalButton(
+                                    onClick = {
+                                        Utilities.saveImageToGallery(imageName, context)
+                                    },
+                                    colors = ButtonDefaults.buttonColors(containerColor = CustomColors.FilledButtonBackgroundColor)
                                 ) {
-                                    Text(
-                                        text = FontAwesomeConstants.DOWNLOAD_ICON,
-                                        fontFamily = CustomFonts.FontAwesome,
-                                        color = CustomColors.FilledButtonTextColor
-                                    )
+                                    Row(
+                                        modifier = Modifier.padding(15.dp)
+                                    ) {
+                                        Text(
+                                            text = FontAwesomeConstants.DOWNLOAD_ICON,
+                                            fontFamily = CustomFonts.FontAwesome,
+                                            color = CustomColors.FilledButtonTextColor
+                                        )
 
-                                    Text(
-                                        text = " Save Wallpaper",
-                                        fontFamily = CustomFonts.MinecraftFont,
-                                        color = CustomColors.FilledButtonTextColor
-                                    )
+                                        Text(
+                                            text = " Save Wallpaper",
+                                            fontFamily = CustomFonts.MinecraftFont,
+                                            color = CustomColors.FilledButtonTextColor
+                                        )
+                                    }
                                 }
-                            }
 
-                            Text(
-                                text = ""
-                            )
+                                Text(
+                                    text = ""
+                                )
 
-                            FilledTonalButton(
-                                onClick = {
-                                    Utilities.shareImage(imageName, context)
-                                },
-                                colors = ButtonDefaults.buttonColors(containerColor = CustomColors.FilledButtonBackgroundColor)
-                            ) {
-                                Row(
-                                    modifier = Modifier.padding(15.dp)
+                                FilledTonalButton(
+                                    onClick = {
+                                        Utilities.shareImage(imageName, context)
+                                    },
+                                    colors = ButtonDefaults.buttonColors(containerColor = CustomColors.FilledButtonBackgroundColor)
                                 ) {
-                                    Text(
-                                        text = FontAwesomeConstants.SHARE_ICON,
-                                        fontFamily = CustomFonts.FontAwesome,
-                                        color = CustomColors.FilledButtonTextColor
-                                    )
+                                    Row(
+                                        modifier = Modifier.padding(15.dp)
+                                    ) {
+                                        Text(
+                                            text = FontAwesomeConstants.SHARE_ICON,
+                                            fontFamily = CustomFonts.FontAwesome,
+                                            color = CustomColors.FilledButtonTextColor
+                                        )
 
-                                    Text(
-                                        text = " Share Wallpaper",
-                                        fontFamily = CustomFonts.MinecraftFont,
-                                        color = CustomColors.FilledButtonTextColor
-                                    )
+                                        Text(
+                                            text = " Share Wallpaper",
+                                            fontFamily = CustomFonts.MinecraftFont,
+                                            color = CustomColors.FilledButtonTextColor
+                                        )
+                                    }
                                 }
-                            }
 
-                            Text(
-                                text = ""
-                            )
+                                Text(
+                                    text = ""
+                                )
 
-                            FilledTonalButton(
-                                onClick = {
-                                    Utilities.openImageInBrowser(imageName, context)
-                                },
-                                colors = ButtonDefaults.buttonColors(containerColor = CustomColors.FilledButtonBackgroundColor)
-                            ) {
-                                Row(
-                                    modifier = Modifier.padding(15.dp)
+                                FilledTonalButton(
+                                    onClick = {
+                                        Utilities.openImageInBrowser(imageName, context)
+                                    },
+                                    colors = ButtonDefaults.buttonColors(containerColor = CustomColors.FilledButtonBackgroundColor)
                                 ) {
-                                    Text(
-                                        text = FontAwesomeConstants.BROWSER_ICON,
-                                        fontFamily = CustomFonts.FontAwesome,
-                                        color = CustomColors.FilledButtonTextColor
-                                    )
+                                    Row(
+                                        modifier = Modifier.padding(15.dp)
+                                    ) {
+                                        Text(
+                                            text = FontAwesomeConstants.BROWSER_ICON,
+                                            fontFamily = CustomFonts.FontAwesome,
+                                            color = CustomColors.FilledButtonTextColor
+                                        )
 
-                                    Text(
-                                        text = " View in Browser",
-                                        fontFamily = CustomFonts.MinecraftFont,
-                                        color = CustomColors.FilledButtonTextColor
-                                    )
+                                        Text(
+                                            text = " View in Browser",
+                                            fontFamily = CustomFonts.MinecraftFont,
+                                            color = CustomColors.FilledButtonTextColor
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -259,7 +270,9 @@ class WallpaperView : ComponentActivity() {
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
                                     Column(
-                                        modifier = Modifier.fillMaxWidth().padding(20.dp)
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(20.dp)
                                     ) {
                                         Text(
                                             text = "Set Wallpaper",

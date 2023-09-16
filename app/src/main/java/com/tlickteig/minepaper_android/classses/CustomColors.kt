@@ -13,7 +13,7 @@ class CustomColors {
             get() = if (isSystemInDarkTheme()) {
                 Color(0xFF2D2D2D)
             } else {
-                Color(0xFFE6E6E6)
+                Color(0xFF3BE8F5)
             }
 
         val TextColor: Color
