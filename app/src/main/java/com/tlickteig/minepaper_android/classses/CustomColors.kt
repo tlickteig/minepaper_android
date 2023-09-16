@@ -42,7 +42,7 @@ class CustomColors {
 
         val DialogBackgroundColor: Color
             @Composable
-            get() = Color.Red
+            get() = Color.White
 
         val TextButtonTextColor: Color
             @Composable

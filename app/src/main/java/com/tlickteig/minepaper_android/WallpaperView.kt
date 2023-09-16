@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.app.WallpaperManager
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -44,10 +43,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
 import com.tlickteig.minepaper_android.classses.Constants
 import com.tlickteig.minepaper_android.classses.CustomColors
@@ -230,138 +233,157 @@ class WallpaperView : ComponentActivity() {
                 }
 
                 if (isDialogOpen.value) {
-                    AlertDialog(
-                        onDismissRequest = { isDialogOpen.value = false },
-                        confirmButton = { /*TODO*/ },
-                        modifier = Modifier.padding(bottom = 0.dp),
-                        title = {
+                    Dialog(
+                        onDismissRequest = { isDialogOpen.value = false }
+                    ) {
+                        Surface(
+                            modifier = Modifier.fillMaxWidth(),
+                            color = Color.Transparent
+                        ) {
                             Box(
-                                contentAlignment = Alignment.Center
+                                modifier = Modifier
+                                    .fillMaxWidth()
                             ) {
-                                Text(
-                                    text = "Set Wallpaper",
-                                    fontFamily = CustomFonts.MinecraftFont,
-                                    textAlign = TextAlign.Center,
-                                    modifier = Modifier.fillMaxWidth()
-                                )
-                            }
-                        },
-                        text = {
-                            Column {
-                                TextButton(
-                                    onClick = {
-                                        Utilities.setWallpaper(imageName, context, Utilities.Companion.WallpaperFlags.HOME)
-                                        isDialogOpen.value = false
-                                    },
-                                    modifier = Modifier.fillMaxWidth(),
-
+                                Column(
+                                    modifier = Modifier
+                                        .padding(top = 30.dp)
+                                        .fillMaxWidth()
+                                        .background(
+                                            color = CustomColors.DialogBackgroundColor,
+                                            shape = RoundedCornerShape(percent = 10)
+                                        ),
+                                    horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
-                                    Row(
-                                        horizontalArrangement = Arrangement.Start,
-                                        modifier = Modifier.fillMaxWidth()
+                                    Column(
+                                        modifier = Modifier.fillMaxWidth().padding(20.dp)
                                     ) {
                                         Text(
-                                            text = FontAwesomeConstants.HOUSE_ICON,
-                                            fontFamily = CustomFonts.FontAwesome,
-                                            color = CustomColors.TextButtonTextColor
-                                        )
-
-                                        Text(
-                                            text = " Set Home Screen Wallpaper",
+                                            text = "Set Wallpaper",
                                             fontFamily = CustomFonts.MinecraftFont,
-                                            color = CustomColors.TextButtonTextColor
-                                        )
-                                    }
-                                }
-
-                                Spacer(
-                                    modifier = Modifier.width(20.dp)
-                                )
-
-                                TextButton(
-                                    onClick = {
-                                        Utilities.setWallpaper(imageName, context, Utilities.Companion.WallpaperFlags.LOCK)
-                                        isDialogOpen.value = false
-                                    },
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Row(
-                                        horizontalArrangement = Arrangement.Start,
-                                        modifier = Modifier.fillMaxWidth()
-                                    ) {
-                                        Text(
-                                            text = FontAwesomeConstants.LOCK_ICON,
-                                            fontFamily = CustomFonts.FontAwesome,
-                                            color = CustomColors.TextButtonTextColor
+                                            textAlign = TextAlign.Center,
+                                            modifier = Modifier.fillMaxWidth()
                                         )
 
-                                        Text(
-                                            text = " Set Lock Screen Wallpaper",
-                                            fontFamily = CustomFonts.MinecraftFont,
-                                            color = CustomColors.TextButtonTextColor
-                                        )
-                                    }
-                                }
-
-                                Spacer(
-                                    modifier = Modifier.width(20.dp)
-                                )
-
-                                TextButton(
-                                    onClick = {
-                                        Utilities.setWallpaper(imageName, context, Utilities.Companion.WallpaperFlags.BOTH)
-                                        isDialogOpen.value = false
-                                    },
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Row(
-                                        horizontalArrangement = Arrangement.Start,
-                                        modifier = Modifier.fillMaxWidth()
-                                    ) {
-                                        Text(
-                                            text = FontAwesomeConstants.SET_WALLPAPER_ICON,
-                                            fontFamily = CustomFonts.FontAwesome,
-                                            color = CustomColors.TextButtonTextColor
+                                        Spacer(
+                                            modifier = Modifier.width(20.dp)
                                         )
 
-                                        Text(
-                                            text = " Set Both Wallpapers",
-                                            fontFamily = CustomFonts.MinecraftFont,
-                                            color = CustomColors.TextButtonTextColor
-                                        )
-                                    }
-                                }
+                                        TextButton(
+                                            onClick = {
+                                                Utilities.setWallpaper(imageName, context, Utilities.Companion.WallpaperFlags.HOME)
+                                                isDialogOpen.value = false
+                                            },
+                                            modifier = Modifier.fillMaxWidth(),
 
-                                Spacer(
-                                    modifier = Modifier.width(20.dp)
-                                )
+                                            ) {
+                                            Row(
+                                                horizontalArrangement = Arrangement.Start,
+                                                modifier = Modifier.fillMaxWidth()
+                                            ) {
+                                                Text(
+                                                    text = FontAwesomeConstants.HOUSE_ICON,
+                                                    fontFamily = CustomFonts.FontAwesome,
+                                                    color = CustomColors.TextButtonTextColor
+                                                )
 
-                                TextButton(
-                                    onClick = {
-                                        isDialogOpen.value = false
-                                    },
-                                    modifier = Modifier.fillMaxWidth(),
-                                ) {
-                                    Row(
-                                        horizontalArrangement = Arrangement.Start,
-                                        modifier = Modifier.fillMaxWidth()
-                                    ) {
-                                        Text(
-                                            text = FontAwesomeConstants.CANCEL_ICON,
-                                            fontFamily = CustomFonts.FontAwesome,
-                                            color = CustomColors.TextButtonTextColor
+                                                Text(
+                                                    text = " Set Home Screen Wallpaper",
+                                                    fontFamily = CustomFonts.MinecraftFont,
+                                                    color = CustomColors.TextButtonTextColor
+                                                )
+                                            }
+                                        }
+
+                                        Spacer(
+                                            modifier = Modifier.width(20.dp)
                                         )
 
-                                        Text(
-                                            text = " Cancel",
-                                            fontFamily = CustomFonts.MinecraftFont,
-                                            color = CustomColors.TextButtonTextColor
+                                        TextButton(
+                                            onClick = {
+                                                Utilities.setWallpaper(imageName, context, Utilities.Companion.WallpaperFlags.LOCK)
+                                                isDialogOpen.value = false
+                                            },
+                                            modifier = Modifier.fillMaxWidth()
+                                        ) {
+                                            Row(
+                                                horizontalArrangement = Arrangement.Start,
+                                                modifier = Modifier.fillMaxWidth()
+                                            ) {
+                                                Text(
+                                                    text = FontAwesomeConstants.LOCK_ICON,
+                                                    fontFamily = CustomFonts.FontAwesome,
+                                                    color = CustomColors.TextButtonTextColor
+                                                )
+
+                                                Text(
+                                                    text = " Set Lock Screen Wallpaper",
+                                                    fontFamily = CustomFonts.MinecraftFont,
+                                                    color = CustomColors.TextButtonTextColor
+                                                )
+                                            }
+                                        }
+
+                                        Spacer(
+                                            modifier = Modifier.width(20.dp)
                                         )
+
+                                        TextButton(
+                                            onClick = {
+                                                Utilities.setWallpaper(imageName, context, Utilities.Companion.WallpaperFlags.BOTH)
+                                                isDialogOpen.value = false
+                                            },
+                                            modifier = Modifier.fillMaxWidth()
+                                        ) {
+                                            Row(
+                                                horizontalArrangement = Arrangement.Start,
+                                                modifier = Modifier.fillMaxWidth()
+                                            ) {
+                                                Text(
+                                                    text = FontAwesomeConstants.SET_WALLPAPER_ICON,
+                                                    fontFamily = CustomFonts.FontAwesome,
+                                                    color = CustomColors.TextButtonTextColor
+                                                )
+
+                                                Text(
+                                                    text = " Set Both Wallpapers",
+                                                    fontFamily = CustomFonts.MinecraftFont,
+                                                    color = CustomColors.TextButtonTextColor
+                                                )
+                                            }
+                                        }
+
+                                        Spacer(
+                                            modifier = Modifier.width(20.dp)
+                                        )
+
+                                        TextButton(
+                                            onClick = {
+                                                isDialogOpen.value = false
+                                            },
+                                            modifier = Modifier.fillMaxWidth(),
+                                        ) {
+                                            Row(
+                                                horizontalArrangement = Arrangement.Start,
+                                                modifier = Modifier.fillMaxWidth()
+                                            ) {
+                                                Text(
+                                                    text = FontAwesomeConstants.CANCEL_ICON,
+                                                    fontFamily = CustomFonts.FontAwesome,
+                                                    color = CustomColors.TextButtonTextColor
+                                                )
+
+                                                Text(
+                                                    text = " Cancel",
+                                                    fontFamily = CustomFonts.MinecraftFont,
+                                                    color = CustomColors.TextButtonTextColor
+                                                )
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
-                    )
+                    }
                 }
             }
         }
