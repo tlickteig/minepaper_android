@@ -241,7 +241,7 @@ class MainActivity : ComponentActivity() {
                                     text = "Retry",
                                     fontFamily = CustomFonts.MinecraftFont,
                                     textAlign = TextAlign.Center,
-                                    color = CustomColors.TextButtonColor
+                                    color = CustomColors.TextButtonTextColor
                                 )
                             }
                         }

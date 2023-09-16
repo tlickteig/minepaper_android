@@ -40,8 +40,16 @@ class CustomColors {
             @Composable
             get() = Color.Red
 
-        val TextButtonColor: Color
+        val TextButtonTextColor: Color
             @Composable
             get() = Color.LightGray
+
+        val FilledButtonTextColor: Color
+            @Composable
+            get() = Color.LightGray
+
+        val FilledButtonBackgroundColor: Color
+            @Composable
+            get() = Color.Blue
     }
 }

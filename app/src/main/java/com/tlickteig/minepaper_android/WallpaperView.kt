@@ -25,6 +25,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -107,7 +109,8 @@ class WallpaperView : ComponentActivity() {
                             .fillMaxHeight()
                     ) {
                         Column(
-                            modifier = Modifier.padding(10.dp)
+                            modifier = Modifier.padding(10.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             AsyncImage(
                                 model = "${Constants.CDN_URL}/${imageName}",
@@ -115,84 +118,112 @@ class WallpaperView : ComponentActivity() {
                                 modifier = Modifier.clip(RoundedCornerShape(10))
                             )
 
-                            Spacer(
-                                modifier = Modifier.width(20.dp)
+                            Text(
+                                text = ""
                             )
 
                             FilledTonalButton(
                                 onClick = {
                                     isDialogOpen.value = true
-                                }
+                                },
+                                colors = ButtonDefaults.buttonColors(containerColor = CustomColors.FilledButtonBackgroundColor)
                             ) {
-                                Text(
-                                    text = FontAwesomeConstants.SET_WALLPAPER_ICON,
-                                    fontFamily = CustomFonts.FontAwesome
-                                )
+                                Row(
+                                    modifier = Modifier.padding(15.dp)
+                                ) {
+                                    Text(
+                                        text = FontAwesomeConstants.SET_WALLPAPER_ICON,
+                                        fontFamily = CustomFonts.FontAwesome,
+                                        color = CustomColors.FilledButtonTextColor
+                                    )
 
-                                Text(
-                                    text = " Set Wallpaper",
-                                    fontFamily = CustomFonts.MinecraftFont
-                                )
+                                    Text(
+                                        text = " Set Wallpaper",
+                                        fontFamily = CustomFonts.MinecraftFont,
+                                        color = CustomColors.FilledButtonTextColor
+                                    )
+                                }
                             }
 
-                            Spacer(
-                                modifier = Modifier.width(20.dp)
+                            Text(
+                                text = ""
                             )
 
                             FilledTonalButton(
                                 onClick = {
                                     Utilities.saveImageToGallery(imageName, context)
-                                }
+                                },
+                                colors = ButtonDefaults.buttonColors(containerColor = CustomColors.FilledButtonBackgroundColor)
                             ) {
-                                Text(
-                                    text = FontAwesomeConstants.DOWNLOAD_ICON,
-                                    fontFamily = CustomFonts.FontAwesome
-                                )
+                                Row(
+                                    modifier = Modifier.padding(15.dp)
+                                ) {
+                                    Text(
+                                        text = FontAwesomeConstants.DOWNLOAD_ICON,
+                                        fontFamily = CustomFonts.FontAwesome,
+                                        color = CustomColors.FilledButtonTextColor
+                                    )
 
-                                Text(
-                                    text = " Save Wallpaper",
-                                    fontFamily = CustomFonts.MinecraftFont
-                                )
+                                    Text(
+                                        text = " Save Wallpaper",
+                                        fontFamily = CustomFonts.MinecraftFont,
+                                        color = CustomColors.FilledButtonTextColor
+                                    )
+                                }
                             }
 
-                            Spacer(
-                                modifier = Modifier.width(20.dp)
+                            Text(
+                                text = ""
                             )
 
                             FilledTonalButton(
                                 onClick = {
                                     Utilities.shareImage(imageName, context)
-                                }
+                                },
+                                colors = ButtonDefaults.buttonColors(containerColor = CustomColors.FilledButtonBackgroundColor)
                             ) {
-                                Text(
-                                    text = FontAwesomeConstants.SHARE_ICON,
-                                    fontFamily = CustomFonts.FontAwesome
-                                )
+                                Row(
+                                    modifier = Modifier.padding(15.dp)
+                                ) {
+                                    Text(
+                                        text = FontAwesomeConstants.SHARE_ICON,
+                                        fontFamily = CustomFonts.FontAwesome,
+                                        color = CustomColors.FilledButtonTextColor
+                                    )
 
-                                Text(
-                                    text = " Share Wallpaper",
-                                    fontFamily = CustomFonts.MinecraftFont
-                                )
+                                    Text(
+                                        text = " Share Wallpaper",
+                                        fontFamily = CustomFonts.MinecraftFont,
+                                        color = CustomColors.FilledButtonTextColor
+                                    )
+                                }
                             }
 
-                            Spacer(
-                                modifier = Modifier.width(20.dp)
+                            Text(
+                                text = ""
                             )
 
                             FilledTonalButton(
                                 onClick = {
                                     Utilities.openImageInBrowser(imageName, context)
-                                }
+                                },
+                                colors = ButtonDefaults.buttonColors(containerColor = CustomColors.FilledButtonBackgroundColor)
                             ) {
-                                Text(
-                                    text = FontAwesomeConstants.BROWSER_ICON,
-                                    fontFamily = CustomFonts.FontAwesome
-                                )
+                                Row(
+                                    modifier = Modifier.padding(15.dp)
+                                ) {
+                                    Text(
+                                        text = FontAwesomeConstants.BROWSER_ICON,
+                                        fontFamily = CustomFonts.FontAwesome,
+                                        color = CustomColors.FilledButtonTextColor
+                                    )
 
-                                Text(
-                                    text = " View in Browser",
-                                    fontFamily = CustomFonts.MinecraftFont
-                                )
+                                    Text(
+                                        text = " View in Browser",
+                                        fontFamily = CustomFonts.MinecraftFont,
+                                        color = CustomColors.FilledButtonTextColor
+                                    )
+                                }
                             }
                         }
                     }
@@ -231,12 +262,14 @@ class WallpaperView : ComponentActivity() {
                                     ) {
                                         Text(
                                             text = FontAwesomeConstants.HOUSE_ICON,
-                                            fontFamily = CustomFonts.FontAwesome
+                                            fontFamily = CustomFonts.FontAwesome,
+                                            color = CustomColors.TextButtonTextColor
                                         )
 
                                         Text(
                                             text = " Set Home Screen Wallpaper",
-                                            fontFamily = CustomFonts.MinecraftFont
+                                            fontFamily = CustomFonts.MinecraftFont,
+                                            color = CustomColors.TextButtonTextColor
                                         )
                                     }
                                 }
@@ -258,12 +291,14 @@ class WallpaperView : ComponentActivity() {
                                     ) {
                                         Text(
                                             text = FontAwesomeConstants.LOCK_ICON,
-                                            fontFamily = CustomFonts.FontAwesome
+                                            fontFamily = CustomFonts.FontAwesome,
+                                            color = CustomColors.TextButtonTextColor
                                         )
 
                                         Text(
                                             text = " Set Lock Screen Wallpaper",
-                                            fontFamily = CustomFonts.MinecraftFont
+                                            fontFamily = CustomFonts.MinecraftFont,
+                                            color = CustomColors.TextButtonTextColor
                                         )
                                     }
                                 }
@@ -285,12 +320,14 @@ class WallpaperView : ComponentActivity() {
                                     ) {
                                         Text(
                                             text = FontAwesomeConstants.SET_WALLPAPER_ICON,
-                                            fontFamily = CustomFonts.FontAwesome
+                                            fontFamily = CustomFonts.FontAwesome,
+                                            color = CustomColors.TextButtonTextColor
                                         )
 
                                         Text(
                                             text = " Set Both Wallpapers",
-                                            fontFamily = CustomFonts.MinecraftFont
+                                            fontFamily = CustomFonts.MinecraftFont,
+                                            color = CustomColors.TextButtonTextColor
                                         )
                                     }
                                 }
@@ -311,12 +348,14 @@ class WallpaperView : ComponentActivity() {
                                     ) {
                                         Text(
                                             text = FontAwesomeConstants.CANCEL_ICON,
-                                            fontFamily = CustomFonts.FontAwesome
+                                            fontFamily = CustomFonts.FontAwesome,
+                                            color = CustomColors.TextButtonTextColor
                                         )
 
                                         Text(
                                             text = " Cancel",
-                                            fontFamily = CustomFonts.MinecraftFont
+                                            fontFamily = CustomFonts.MinecraftFont,
+                                            color = CustomColors.TextButtonTextColor
                                         )
                                     }
                                 }
