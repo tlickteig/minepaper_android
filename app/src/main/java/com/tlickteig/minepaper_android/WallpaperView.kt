@@ -115,6 +115,10 @@ class WallpaperView : ComponentActivity() {
                             modifier = Modifier.padding(10.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
+                            Text(
+                                text = ""
+                            )
+
                             AsyncImage(
                                 model = "${Constants.CDN_URL}/${imageName}",
                                 contentDescription = null,
