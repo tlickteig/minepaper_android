@@ -1,5 +1,6 @@
 package com.tlickteig.minepaper_android.classses
 
+import android.app.Activity
 import android.app.WallpaperManager
 import android.content.ContentValues
 import android.content.Context
@@ -9,6 +10,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.FileProvider
@@ -78,8 +80,8 @@ class Utilities {
         }
 
         fun setWallpaper(imageName: String, context: Context, flags: WallpaperFlags = WallpaperFlags.BOTH) {
-            try {
-                var thread = Thread {
+            var thread = Thread {
+                try {
                     val url = URL("${Constants.CDN_URL}/${imageName}")
                     val image = BitmapFactory.decodeStream(
                         url.openConnection().getInputStream()
@@ -89,21 +91,37 @@ class Utilities {
 
                     when (flags) {
                         WallpaperFlags.LOCK -> {
-                            wallpaperManager.setBitmap(image, null, false, WallpaperManager.FLAG_LOCK)
+                            wallpaperManager.setBitmap(
+                                image,
+                                null,
+                                false,
+                                WallpaperManager.FLAG_LOCK
+                            )
+                            toastOnUiThread("Lock screen wallpaper set", context)
                         }
+
                         WallpaperFlags.HOME -> {
-                            wallpaperManager.setBitmap(image, null, false, WallpaperManager.FLAG_SYSTEM)
+                            wallpaperManager.setBitmap(
+                                image,
+                                null,
+                                false,
+                                WallpaperManager.FLAG_SYSTEM
+                            )
+                            toastOnUiThread("Home screen wallpaper set", context)
                         }
+
                         else -> {
                             wallpaperManager.setBitmap(image)
+                            toastOnUiThread("Wallpaper set", context)
                         }
                     }
                 }
-                thread.start()
+                catch (e: Exception) {
+                    toastOnUiThread("There was a problem setting the wallpaper. Please try again later", context)
+                }
             }
-            catch (e: Exception) {
-                println(e)
-            }
+
+            thread.start()
         }
 
         fun saveImageToGallery(imageName: String, context: Context) {
@@ -173,6 +191,13 @@ class Utilities {
             }
             catch (e: Exception) {
                 println(e)
+            }
+        }
+
+        fun toastOnUiThread(message: String, context: Context) {
+            val activity = context as Activity
+            activity.runOnUiThread {
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             }
         }
 
