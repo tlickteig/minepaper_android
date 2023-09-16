@@ -16,5 +16,6 @@ class FontAwesomeConstants {
         const val HOUSE_ICON: String = "\uF015"
         const val LOCK_ICON: String = "\uF023"
         const val CANCEL_ICON: String = "\uF05E"
+        const val ERROR_ICON: String = "\uF06A"
     }
 }

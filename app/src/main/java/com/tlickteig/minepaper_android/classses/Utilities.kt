@@ -42,10 +42,12 @@ class Utilities {
                 .get()
                 .url(Constants.IMAGES_LIST_LOCATION)
                 .build()
+            var hasNetworkErrorOccurred = false
 
             okHttpClient.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
-                    throw e
+                    hasNetworkErrorOccurred = true
+                    semaphore.release()
                 }
 
                 override fun onResponse(call: Call, response: Response) {
@@ -62,7 +64,11 @@ class Utilities {
                     semaphore.release()
                 }
             })
+
             semaphore.acquire()
+            if (hasNetworkErrorOccurred) {
+                throw IOException("A network error has occurred. Please try again later")
+            }
 
             return output
         }

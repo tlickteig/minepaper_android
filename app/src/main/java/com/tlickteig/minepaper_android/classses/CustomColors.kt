@@ -35,5 +35,13 @@ class CustomColors {
             } else {
                 Color(0xFFF5F5F5)
             }
+
+        val ErrorColor: Color
+            @Composable
+            get() = Color.Red
+
+        val TextButtonColor: Color
+            @Composable
+            get() = Color.Cyan
     }
 }
