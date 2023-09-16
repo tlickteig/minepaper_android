@@ -125,9 +125,9 @@ class Utilities {
         }
 
         fun saveImageToGallery(imageName: String, context: Context) {
-            try {
-                if (isExternalStorageWritable()) {
-                    var thread = Thread {
+            if (isExternalStorageWritable()) {
+                var thread = Thread {
+                    try {
                         val url = URL("${Constants.CDN_URL}/${imageName}")
                         val image = BitmapFactory.decodeStream(
                             url.openConnection().getInputStream()
@@ -149,49 +149,48 @@ class Utilities {
                         val outputStream: OutputStream? = uri?.let { resolver.openOutputStream(it) }
                         image.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
                         outputStream?.close()
-                    }
-                    thread.start()
-                }
-            }
-            catch (e: Exception) {
-                println(e)
-            }
-        }
-
-        fun shareImage(imageName: String, context: Context) {
-            try {
-                var thread = Thread {
-                    try {
-                        val url = URL("${Constants.CDN_URL}/${imageName}")
-                        val image = BitmapFactory.decodeStream(
-                            url.openConnection().getInputStream()
-                        )
-
-                        val cachePath = File(context.cacheDir, "images")
-                        cachePath.mkdirs()
-
-                        val file = File(cachePath, imageName)
-                        val fos = FileOutputStream(file)
-
-                        image.compress(Bitmap.CompressFormat.PNG, 90, fos)
-                        fos.flush()
-                        fos.close()
-                        val uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file)
-
-                        val intent = Intent(Intent.ACTION_SEND)
-                        intent.putExtra(Intent.EXTRA_STREAM, uri)
-                        intent.setType("image/png");
-                        context.startActivity(Intent.createChooser(intent, "Share Via"));
+                        toastOnUiThread("Wallpaper saved", context)
                     }
                     catch (e: Exception) {
-                        println(e)
+                        toastOnUiThread("Error occurred while saving image. Please try again later.", context)
                     }
                 }
                 thread.start()
             }
-            catch (e: Exception) {
-                println(e)
+            else {
+                toastOnUiThread("Storage is not writable. Please try again later", context)
             }
+        }
+
+        fun shareImage(imageName: String, context: Context) {
+            var thread = Thread {
+                try {
+                    val url = URL("${Constants.CDN_URL}/${imageName}")
+                    val image = BitmapFactory.decodeStream(
+                        url.openConnection().getInputStream()
+                    )
+
+                    val cachePath = File(context.cacheDir, "images")
+                    cachePath.mkdirs()
+
+                    val file = File(cachePath, imageName)
+                    val fos = FileOutputStream(file)
+
+                    image.compress(Bitmap.CompressFormat.PNG, 90, fos)
+                    fos.flush()
+                    fos.close()
+                    val uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", file)
+
+                    val intent = Intent(Intent.ACTION_SEND)
+                    intent.putExtra(Intent.EXTRA_STREAM, uri)
+                    intent.setType("image/png");
+                    context.startActivity(Intent.createChooser(intent, "Share Via"));
+                }
+                catch (e: Exception) {
+                    toastOnUiThread("Failed to share image. Please try again later", context)
+                }
+            }
+            thread.start()
         }
 
         fun toastOnUiThread(message: String, context: Context) {

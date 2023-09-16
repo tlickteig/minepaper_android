@@ -42,6 +42,6 @@ class CustomColors {
 
         val TextButtonColor: Color
             @Composable
-            get() = Color.Cyan
+            get() = Color.LightGray
     }
 }
