@@ -28,6 +28,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 import java.net.URL
+import java.net.UnknownHostException
 
 class Utilities {
     companion object {
@@ -191,6 +192,38 @@ class Utilities {
                 }
             }
             thread.start()
+        }
+
+        fun getBitmapsFromImageList(imageList: List<String>) : List<Bitmap> {
+
+            var output: List<Bitmap> = mutableListOf()
+            val semaphore = Semaphore(0)
+            var hasNetworkErrorHappened = false
+
+            var thread = Thread {
+                try {
+                    for (imageName in imageList) {
+                        val url = URL("${Constants.CDN_URL}/${imageName}")
+                        val image = BitmapFactory.decodeStream(
+                            url.openConnection().getInputStream()
+                        )
+                        output = output + image
+                    }
+                }
+                catch (e: Exception) {
+                    hasNetworkErrorHappened = true
+                }
+                finally {
+                    semaphore.release()
+                }
+            }
+            thread.start()
+            semaphore.acquire()
+
+            if (hasNetworkErrorHappened) {
+                throw IOException("A network error has occurred")
+            }
+            return output
         }
 
         fun toastOnUiThread(message: String, context: Context) {
