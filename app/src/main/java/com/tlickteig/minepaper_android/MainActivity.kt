@@ -116,135 +116,141 @@ class MainActivity : ComponentActivity() {
                     val listState = rememberLazyListState()
                     var hasErrorHappened = remember { mutableStateOf(false) }
 
-                    if (!hasErrorHappened.value) {
-                        Column(
-                            modifier = Modifier
-                                .padding(innerPadding)
-                                .background(color = CustomColors.BackgroundColor)
-                        ) {
-                            LazyColumn(
-                                state = listState,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(10.dp),
-                                verticalArrangement = Arrangement.spacedBy(10.dp)
-                            ) {
-                                items(itemList) { item ->
-                                    Spacer(
-                                        modifier = Modifier.width(20.dp)
-                                    )
+                    fun loadNewImages() {
+                        var thread = Thread {
+                            try {
+                                loading.value = true
+                                val items = getListOfImagesOnPage(page.value)
+                                val bitmapList =
+                                    Utilities.getBitmapsFromImageList(items)
 
-                                    if (item.bitmap != null) {
-                                        Image(
-                                            bitmap = item.bitmap!!.asImageBitmap(),
-                                            contentDescription = null,
-                                            modifier = Modifier
-                                                .clip(RoundedCornerShape(10))
-                                                .clickable(onClick = {
-                                                    var intent =
-                                                        Intent(
-                                                            context,
-                                                            WallpaperView::class.java
-                                                        )
-                                                    intent.putExtra("imageName", item.name)
-                                                    context.startActivity(intent)
-                                                })
+                                for ((index, imageName) in items.withIndex()) {
+                                    var wallpaperModel = WallpaperModel()
+                                    wallpaperModel.name = imageName
+                                    wallpaperModel.bitmap = bitmapList[index]
+                                    itemList.add(wallpaperModel)
+                                }
+
+                                loading.value = false
+                            } catch (e: Exception) {
+                                hasErrorHappened.value = true
+                            }
+                        }
+
+                        thread.start()
+                    }
+
+                    Column(
+                        modifier = Modifier
+                            .padding(innerPadding)
+                            .background(color = CustomColors.BackgroundColor)
+                    ) {
+                        LazyColumn(
+                            state = listState,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(10.dp),
+                            verticalArrangement = Arrangement.spacedBy(10.dp)
+                        ) {
+                            items(itemList) { item ->
+                                Spacer(
+                                    modifier = Modifier.width(20.dp)
+                                )
+
+                                if (item.bitmap != null) {
+                                    Image(
+                                        bitmap = item.bitmap!!.asImageBitmap(),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .clip(RoundedCornerShape(10))
+                                            .clickable(onClick = {
+                                                var intent =
+                                                    Intent(
+                                                        context,
+                                                        WallpaperView::class.java
+                                                    )
+                                                intent.putExtra("imageName", item.name)
+                                                context.startActivity(intent)
+                                            })
+                                    )
+                                }
+                            }
+
+                            item {
+                                if (loading.value && !hasErrorHappened.value) {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(10.dp),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        CircularProgressIndicator(
+                                            modifier = Modifier.size(50.dp),
+                                            strokeWidth = 2.dp,
+                                            color = Color.Red
                                         )
                                     }
                                 }
+                            }
 
+                            if (hasErrorHappened.value) {
                                 item {
-                                    if (loading.value) {
-                                        Box(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .padding(10.dp),
-                                            contentAlignment = Alignment.Center
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.Center,
+                                        modifier = Modifier
+                                            .padding(innerPadding)
+                                            .background(color = CustomColors.BackgroundColor)
+                                            .fillMaxSize()
+                                    ) {
+                                        Text(
+                                            text = FontAwesomeConstants.ERROR_ICON,
+                                            fontFamily = CustomFonts.FontAwesome,
+                                            modifier = Modifier.fillMaxWidth(),
+                                            textAlign = TextAlign.Center,
+                                            color = CustomColors.ErrorColor,
+                                            fontSize = 30.sp
+                                        )
+
+                                        Text(
+                                            text = "An error has occurred. Sorry",
+                                            fontFamily = CustomFonts.MinecraftFont,
+                                            modifier = Modifier.fillMaxWidth(),
+                                            textAlign = TextAlign.Center,
+                                            color = CustomColors.TextColor
+                                        )
+
+                                        TextButton(
+                                            onClick = {
+                                                hasErrorHappened.value = false
+                                                loadNewImages()
+                                            }
                                         ) {
-                                            CircularProgressIndicator(
-                                                modifier = Modifier.size(50.dp),
-                                                strokeWidth = 2.dp,
-                                                color = Color.Red
+                                            Text(
+                                                text = "Retry",
+                                                fontFamily = CustomFonts.MinecraftFont,
+                                                textAlign = TextAlign.Center,
+                                                color = CustomColors.TextButtonTextColor
                                             )
                                         }
                                     }
                                 }
                             }
-
-                            LaunchedEffect(key1 = page.value) {
-                                var thread = Thread {
-                                    try {
-                                        loading.value = true
-                                        val items = getListOfImagesOnPage(page.value)
-                                        val bitmapList =
-                                            Utilities.getBitmapsFromImageList(items)
-
-                                        for ((index, imageName) in items.withIndex()) {
-                                            var wallpaperModel = WallpaperModel()
-                                            wallpaperModel.name = imageName
-                                            wallpaperModel.bitmap = bitmapList[index]
-                                            itemList.add(wallpaperModel)
-                                        }
-
-                                        loading.value = false
-                                    } catch (e: Exception) {
-                                        hasErrorHappened.value = true
-                                    }
-                                }
-
-                                thread.start()
-                            }
-
-                            LaunchedEffect(listState) {
-                                snapshotFlow {
-                                    listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
-                                }
-                                    .collectLatest { index ->
-                                        if (!loading.value && index != null && index >= itemList.size - 5) {
-                                            page.value++
-                                        }
-                                    }
-                            }
                         }
-                    }
-                    else {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
-                            modifier = Modifier
-                                .padding(innerPadding)
-                                .background(color = CustomColors.BackgroundColor)
-                                .fillMaxSize()
-                        ) {
-                            Text(
-                                text = FontAwesomeConstants.ERROR_ICON,
-                                fontFamily = CustomFonts.FontAwesome,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Center,
-                                color = CustomColors.ErrorColor,
-                                fontSize = 30.sp
-                            )
 
-                            Text(
-                                text = "An error has occurred. Sorry",
-                                fontFamily = CustomFonts.MinecraftFont,
-                                modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Center,
-                                color = CustomColors.TextColor
-                            )
+                        LaunchedEffect(key1 = page.value) {
+                            loadNewImages()
+                        }
 
-                            TextButton(
-                                onClick = {
-                                    hasErrorHappened.value = false
-                                }
-                            ) {
-                                Text(
-                                    text = "Retry",
-                                    fontFamily = CustomFonts.MinecraftFont,
-                                    textAlign = TextAlign.Center,
-                                    color = CustomColors.TextButtonTextColor
-                                )
+                        LaunchedEffect(listState) {
+                            snapshotFlow {
+                                listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
                             }
+                                .collectLatest { index ->
+                                    if (!loading.value && index != null && index >= itemList.size - 5) {
+                                        page.value++
+                                    }
+                                }
                         }
                     }
                 }
