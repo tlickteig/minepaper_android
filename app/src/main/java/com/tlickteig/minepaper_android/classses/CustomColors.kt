@@ -71,5 +71,13 @@ class CustomColors {
             } else {
                 Color(0xFFB3E7E8)
             }
+
+        val ProgressIndicatorColor: Color
+            @Composable
+            get() = if (isSystemInDarkTheme()) {
+                Color(0xFFA3B4FF)
+            } else {
+                Color(0xFF626FFC)
+            }
     }
 }

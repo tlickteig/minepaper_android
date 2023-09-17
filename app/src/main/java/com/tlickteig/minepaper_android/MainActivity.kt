@@ -187,7 +187,7 @@ class MainActivity : ComponentActivity() {
                                         CircularProgressIndicator(
                                             modifier = Modifier.size(50.dp),
                                             strokeWidth = 2.dp,
-                                            color = Color.Red
+                                            color = CustomColors.ProgressIndicatorColor
                                         )
                                     }
                                 }
