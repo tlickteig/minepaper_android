@@ -148,9 +148,11 @@ class Utilities {
                         val uri = resolver.insert(imageCollection, values)
 
                         val outputStream: OutputStream? = uri?.let { resolver.openOutputStream(it) }
-                        image.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-                        outputStream?.close()
-                        toastOnUiThread("Wallpaper saved", context)
+                        if (outputStream != null) {
+                            image.compress(Bitmap.CompressFormat.JPEG, 100, outputStream!!)
+                            outputStream?.close()
+                            toastOnUiThread("Wallpaper saved", context)
+                        }
                     }
                     catch (e: Exception) {
                         toastOnUiThread("Error occurred while saving image. Please try again later.", context)
